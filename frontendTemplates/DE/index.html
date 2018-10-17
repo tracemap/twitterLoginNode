@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tracemap - Twitter Login</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./../css/twitterLogin.css">
+        <link href="https://fonts.googleapis.com/css?family=Rubik:400,600,900" rel="stylesheet">
+        <meta name="description" content="Hilf TraceMap, indem du dich mit deinem Twitter Account einloggst.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="./img/fav16.png" sizes="16x16">
+	<link rel="icon" type="image/png" href="./img/fav32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="./img/fav64.png" sizes="64x64">
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+        <div id="background"></div>
+        <div id="content">
+            <h1>Wie du uns unterstützen kanns</h1>
+            <p>Mit 30 Sekunden deiner Zeit und einem Twitter-Login über diese Seite kannst du unseren Entwicklungsprozess beschleunigen.</p>
+            <div id="buttonBox">
+                <button class="landingPage">Über das Projekt</button>
+                <button class="twitterLogin">Token spenden</button>
+            </div>
+            <div id="counter"></div>
+            <h3>Warum wir deine Unterstützung brauchen</h3>
+            <p>Damit TraceMap auf Twitter funktioniert, müssen wir Twitterdaten sammeln. Wir haben dafür eine Applikation geschrieben, die diese Daten sammelt und unsere Datenbank laufend aktualisiert.<br><br>
+            Seit 2012 verlangt Twitter eine Nutzerauthentifizierung, um diese Daten herunterzuladen. Zudem ist die Anzahl der Anfragen pro Nutzer und Minute begrenzt.<br><br>
+            Damit wir mehrere Anfragen stellen und die Daten schneller sammeln können, benötigen wir Access Tokens, die beim Login generiert werden. Jeder Account generiert beim Login über unsere Seite einen Token. Davon benötigen wir circa 600, um die Daten für das deutsche Twitter Netzwerk zu sammeln. Um das gesamte Twitter-Netzwerk abzudecken, benötigen wir ungefähr 30.000 Tokens. Deshalb ist deine Unterstützung so wichtig!</p>
+            <h3>Verändert der Login das Verhalten meines Twitter Accounts?</h3>
+            <p>Nein. Dein Login hat keine Auswirkungen auf deinen Twitter Account. Sie gibt uns nur Leseerlaubnis. Damit können wir ausschließlich deine Tweets lesen und sehen, wem du folgst. Wir können dein Profil nicht aktualisieren, keine Tweets für dich veröffentlichen und auch nicht deine E-Mail Adresse sehen.</p>
+            <h3>Werden durch den Login persönlichen Daten gespeichert?</h3>
+            <p>Nein. Wir speichern nur den generierten Access Token und das dazugehörige Access Token Secret auf unseren Servern, die in Deutschland liegen. Diese Daten erlauben keinen Rückschluss auf dein Twitter Profil. Außerdem versprechen wir dir, dass wir die Leseerlaubnis nicht nutzen. Deine persönlichen Daten sind sicher und wir geben keine Informationen weiter.</p>
+            <h3>Widerspricht die Sammlung von Twitterdaten den Datenschutzbestimmungen?</h3>
+            <p>Nein. Wir sammeln ausschließlich Daten, die öffentlich zugänglich sind: die öffentlichen Follower jedes öffentlichen Twitterprofils.</p>
+        </div>
+        <script src="./../js/socket.io.js"></script>
+        <script src="./../js/jquery.min.js"></script>
+        <script>
+            $(function() {
+                var socket = io('https://twitter.tracemap.info:3000');
+                $('button.twitterLogin').on('click', function(){
+                    socket.emit('twitterAuth');
+                });
+                $('button.landingPage').on('click', function(){
+                    window.location.href = "https://tracemap.info/DE";
+                });
+                socket.on('redirect', function(destination){
+                    window.location.href = destination;
+                });
+                socket.on('setCounter', function( tokenCount){
+                    var txt = document.createTextNode("Wir haben schon " + tokenCount + 
+                            " Token gesammelt.");
+                    $('#counter').append(txt);
+                });
+            });
+        </script>
+    </body>
+</html>
