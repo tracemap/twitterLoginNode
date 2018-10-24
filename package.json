@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "elastic-apm-node": "^1.13.0",
     "express": "^4.15.2",
     "mysql": "^2.15.0",
     "node-twitter-api": "^1.8.0",
