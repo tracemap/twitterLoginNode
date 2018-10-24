@@ -1,4 +1,10 @@
+var config = require('./config');
+
+// start monitoring with elastic apm early
+var apm = require('elastic-apm-node').start(config.elasticApm)
+
 var cluster = require('cluster');
+
 if (cluster.isMaster) {
     cluster.fork();
 
@@ -21,7 +27,6 @@ if (cluster.isWorker){
     var io = require('socket.io')(https);
     var Twitter = require('node-twitter-api');
     var mysql = require('mysql');
-    var config = require('./config');
 
     var userExistsErrorPage = config.pages.userExistsPage;
     var errorPage = config.pages.errorPage;
