@@ -3,20 +3,44 @@
     <head>
         <title>Twitter Sign In</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="./css/twitterLogin.css">
+        <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:300,400,500" rel="stylesheet">
+        <meta name="description" content="Help TraceMap with providing us read-access to your twitter account.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/png" href="./img/fav16.png" sizes="16x16">
+	<link rel="icon" type="image/png" href="./img/fav32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="./img/fav64.png" sizes="64x64">
         <meta charset="utf-8"/>
     </head>
     <body>
-        <button>Login with Twitter</button>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
-        <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <div id="background"></div>
+        <div id="content">
+            <h1>What next?</h1>
+            <p>Pressing the button redirects you to Twitter, where you can grant our application read access to your Tweets to give us one more token. We will not read your tweets, its just the most restricted permission we could choose.</p>
+            <div id="buttonBox">
+                <button class="landingPage light">About the project</button>
+                <button class="twitterLogin">Donate Token</button>
+            </div>
+            <div id="counter"></div>
+        </div>
+        <script src="./js/socket.io.js"></script>
+        <script src="./js/jquery.min.js"></script>
         <script>
             $(function() {
-                var socket = io('http://localhost:3000');
-                $('button').on('click', function(){
+                var socket = io('https://twitter.tracemap.info:3000');
+                $('button.twitterLogin').on('click', function(){
                     socket.emit('twitterAuth');
+                });
+                $('button.landingPage').on('click', function(){
+                    window.location.href = "https://tracemap.info";
                 });
                 socket.on('redirect', function(destination){
                     window.location.href = destination;
+                });
+                socket.on('setCounter', function( tokenCount){
+                    var txt = document.createTextNode( tokenCount + 
+                            " tokens are already collected.");
+                    $('#counter').append(txt);
                 });
             });
         </script>

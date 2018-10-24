@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Trace Map</title>
+<link rel="stylesheet" href="./css/thankyou.css">
+<link href="https://fonts.googleapis.com/css?family=Rubik:900" rel="stylesheet">
+<meta name="description" content="TraceMap says thank you for your twitter login">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="utf-8"/>
+<link rel="icon" type="image/png" href="./img/fav16.png" sizes="16x16">
+<link rel="icon" type="image/png" href="./img/fav32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="./img/fav64.png" sizes="64x64">
+</head>
+<body>
+    <div id="heartbox"></div>
+    <div id="start" class="grid_4">
+        <div class="logo centerVertical"><h3>TraceMap</h3></div>
+        <div class="slogan centerVertical">
+        <h1>Thanks for the help!</h1>
+        </div>
+        <div id="scroller" class="centerVertical"><a href="https://tracemap.info">Back to tracemap.info</a></div>
+    </div>
+    <script src="./js/socket.io.js"></script>
+    <script src="./js/jquery.min.js"></script>
+    <script>
+        $.urlParam = function(name){
+            var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+            if(!results)
+                return undefined;
+            return results[1] || 0;
+        }
+        $(function() {
+            var socket = io("https://twitter.tracemap.info:3000");
+            var oauthToken = $.urlParam('oauth_token');
+            var oauthSecret = $.urlParam('oauth_verifier');
+            if(oauthToken && oauthSecret)
+                socket.emit('getAccessToken', oauthToken, oauthSecret);
+            else
+                window.location.href = "https://tracemap.info";
+
+            socket.on('redirect', function( destination){
+                window.location.href = destination;
+            });
+        }); 
+    </script>
+    <script src="./js/thankyou.js" type="text/javascript"></script>
+</body>
+</html>

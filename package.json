@@ -10,7 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.15.2",
-    "mysql": "^2.14.1",
+    "mysql": "^2.15.0",
     "node-twitter-api": "^1.8.0",
     "socket.io": "^2.0.3"
   }
