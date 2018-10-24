@@ -34,7 +34,6 @@ if (cluster.isWorker){
 
     //Get mysql-credentials from config file
     var dbCon = mysql.createConnection({
-        // TODO: Delete before git upload
         host: config.dbCred.host,
         user: config.dbCred.user,
         password: config.dbCred.password,
@@ -144,7 +143,6 @@ if (cluster.isWorker){
         //Redirect user to "user exists page" if accessToken is already in the database
         //Redirect user to "error page" for other errors (ask him to try again)
         function handleError( error){
-            //TODO: redirect user to error page
             console.log( "!!!!!  " + error + "  !!!!!");
             if(error.code && error.code.indexOf("ER_DUP_ENTRY") >= 0) {
                 console.log("redirecting to user exists page");
